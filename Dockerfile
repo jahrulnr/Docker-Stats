@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 		cmake clang ninja-build pkg-config libgtk-3-dev mesa-utils \
     && rm -rf /var/lib/apt/lists/* \
 		# Enable Flutter linux desktop support
-		flutter config --enable-linux-desktop
+		&& flutter config --enable-linux-desktop
 
 # Copy pubspec files first for better caching
 COPY pubspec.yaml pubspec.lock ./
