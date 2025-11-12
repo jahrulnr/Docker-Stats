@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+# Create desktop entry
+cat > /usr/share/applications/docker-stats.desktop << EOF
+[Desktop Entry]
+Type=Application
+Name=Docker Status
+Comment=Docker container monitoring application
+Exec=/opt/docker-stats/docker_stats_app
+Icon=docker-stats
+Terminal=false
+Categories=Utility;System;Monitor;
+StartupNotify=true
+EOF
+
+# Make executable
+chmod +x /opt/docker-stats/docker_stats_app
+
+# Update desktop database
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database
+fi
+
+# Update icon cache
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+
+echo "Docker Stats app installed successfully!"

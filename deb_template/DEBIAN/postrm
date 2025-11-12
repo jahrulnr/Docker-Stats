@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+# Remove desktop entry
+rm -f /usr/share/applications/docker-stats.desktop
+
+# Remove icon
+rm -f /usr/share/icons/hicolor/512x512/apps/docker-stats.png
+
+# Update desktop database
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database
+fi
+
+# Update icon cache
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+
+echo "Docker Stats app removed successfully!"

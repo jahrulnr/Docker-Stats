@@ -1,0 +1,73 @@
+name: Build and Release .deb Packages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [published]
+
+jobs:
+  build-amd64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build .deb package for AMD64
+      run: make build-amd64
+
+    - name: Upload AMD64 .deb artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-stats-amd64
+        path: dist/*amd64.deb
+
+  build-arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build .deb package for ARM64
+      run: make build-arm64
+
+    - name: Upload ARM64 .deb artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-stats-arm64
+        path: dist/*arm64.deb
+
+  release:
+    needs: [build-amd64, build-arm64]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - name: Download AMD64 artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: docker-stats-amd64
+
+    - name: Download ARM64 artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: docker-stats-arm64
+
+    - name: Display structure of downloaded files
+      run: ls -la
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          *.deb
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

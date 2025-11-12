@@ -1,0 +1,10 @@
+Package: docker-stats-app
+Version: {{version}}
+Architecture: {{arch}}
+Maintainer: Docker Stats Team <docker-stats@example.com>
+Description: Docker container monitoring application with real-time charts
+ A Flutter desktop application for monitoring Docker containers with
+ real-time statistics, charts, and system integration features.
+Homepage: https://github.com/jahrulnr/Docker-Stats.git
+Section: utils
+Priority: optional
