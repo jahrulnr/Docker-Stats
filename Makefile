@@ -43,7 +43,7 @@ build-amd64:
 	@mkdir -p dist
 	docker buildx build \
 		--platform linux/amd64 \
-		--build-arg "BASE=${BASE_IMAGE_AMD64}" \
+		--build-arg "BASE=$(BASE_IMAGE_AMD64)" \
 		--tag $(IMAGE_NAME)-amd64 \
 		--load \
 		.
@@ -52,6 +52,8 @@ build-amd64:
 		echo "🏗️ Building .deb packages inside container..."; \
 		VERSION=$$(grep "^version:" pubspec.yaml | sed "s/version: //" | sed "s/+.*//"); \
 		echo "📋 Building version: $$VERSION"; \
+		flutter clean; \
+		flutter pub upgrade --major-versions; \
 		flutter build linux --release; \
 		pkg_dir="dist/docker-stats-app-$${VERSION}_amd64"; \
 		rm -rf "$$pkg_dir"; \
@@ -77,7 +79,7 @@ build-arm64:
 	@mkdir -p dist
 	docker buildx build \
 		--platform linux/arm64 \
-		--build-arg "BASE=${BASE_IMAGE_ARM64}" \
+		--build-arg "BASE=$(BASE_IMAGE_ARM64)" \
 		--tag $(IMAGE_NAME)-arm64 \
 		--load \
 		.
@@ -86,6 +88,8 @@ build-arm64:
 		echo "🏗️ Building .deb packages inside container..."; \
 		VERSION=$$(grep "^version:" pubspec.yaml | sed "s/version: //" | sed "s/+.*//"); \
 		echo "📋 Building version: $$VERSION"; \
+		flutter clean; \
+		flutter pub upgrade --major-versions; \
 		flutter build linux --release --target-platform linux-arm64; \
 		pkg_dir="dist/docker-stats-app-$${VERSION}_arm64"; \
 		rm -rf "$$pkg_dir"; \

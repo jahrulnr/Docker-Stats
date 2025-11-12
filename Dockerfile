@@ -4,17 +4,17 @@
 ARG BASE=ghcr.io/cirruslabs/flutter:3.35.7
 FROM ${BASE}
 
+# Set the working directory
+WORKDIR /app
+
 # Install additional system dependencies for .deb building
 RUN apt-get update && apt-get install -y \
     dpkg-dev \
     debhelper \
-    && rm -rf /var/lib/apt/lists/*
-
-# Enable Flutter linux desktop support
-RUN flutter config --enable-linux-desktop
-
-# Set the working directory
-WORKDIR /app
+		cmake clang ninja-build pkg-config libgtk-3-dev mesa-utils \
+    && rm -rf /var/lib/apt/lists/* \
+		# Enable Flutter linux desktop support
+		flutter config --enable-linux-desktop
 
 # Copy pubspec files first for better caching
 COPY pubspec.yaml pubspec.lock ./
