@@ -81,7 +81,7 @@ build-arm64:
 		--tag $(IMAGE_NAME)-arm64 \
 		--load \
 		.
-	@docker run -d --name $(IMAGE_NAME)-temp-arm64 $(IMAGE_NAME)-arm64 sleep 300
+	@docker run -d --platform linux/arm64 --name $(IMAGE_NAME)-temp-arm64 $(IMAGE_NAME)-arm64 sleep 300
 	@docker exec $(IMAGE_NAME)-temp-arm64 /bin/bash -c '\
 		echo "🏗️ Building .deb packages inside container..."; \
 		VERSION=$$(grep "^version:" pubspec.yaml | sed "s/version: //" | sed "s/+.*//"); \
