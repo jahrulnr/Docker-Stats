@@ -42,6 +42,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => config_usecases.SaveDockerConfig(sl()));
   sl.registerLazySingleton(() => config_usecases.CheckDockerAvailability(sl()));
 
+  // Domain entities - register default instances if needed
+  sl.registerFactory(() => DockerConfig());
+
   // BLoC
   sl.registerFactory(() => DockerStatsBloc(
         getContainers: sl(),
@@ -53,7 +56,4 @@ Future<void> init() async {
         saveDockerConfig: sl(),
         checkDockerAvailability: sl(),
       ));
-
-  // Domain entities - register default instances if needed
-  sl.registerFactory(() => DockerConfig());
 }
