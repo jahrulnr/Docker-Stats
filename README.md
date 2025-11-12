@@ -55,6 +55,37 @@ The .deb package includes:
 - ✅ **Desktop Launcher**: Added to application menu
 - ✅ **Auto-start Support**: Ready for system integration
 
+### Uninstallation
+
+To uninstall the Docker Stats app:
+
+#### Using apt (Recommended):
+```bash
+sudo apt remove docker-stats-app
+```
+
+#### Using dpkg:
+```bash
+sudo dpkg -r docker-stats-app
+```
+
+#### Complete Removal (including configuration):
+```bash
+# Remove the package
+sudo apt purge docker-stats-app
+
+# Remove user configuration (optional)
+rm -rf ~/.config/docker-stats
+
+# Remove system cache (optional)
+rm -rf ~/.cache/docker-stats
+```
+
+**Note**: The uninstallation will remove:
+- The application binary from `/opt/docker-stats/`
+- Desktop launcher and icon
+- Auto-start configuration (if enabled)
+
 ### From Source
 
 1. **Prerequisites**:
