@@ -1,7 +1,8 @@
 # Docker Stats .deb Builder
 # Multi-architecture Dockerfile using Cirrus Labs Flutter images
 
-FROM ghcr.io/cirruslabs/flutter:3.35.7
+ARG BASE=ghcr.io/cirruslabs/flutter:3.35.7
+FROM ${BASE}
 
 # Install additional system dependencies for .deb building
 RUN apt-get update && apt-get install -y \

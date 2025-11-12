@@ -28,6 +28,8 @@ VERSION := $(shell grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/
 
 # Docker image name
 IMAGE_NAME := docker-stats-builder
+BASE_IMAGE_AMD64 := ghcr.io/cirruslabs/flutter:3.35.7
+BASE_IMAGE_ARM64 := ghcr.io/cirruslabs/flutter:3.35.7@sha256:83ce9c8cc7a96d0f7bdf53a3d17ddcc3ee8933546cac8c373f422ed113e57f8f
 
 # Build targets
 build: build-all
@@ -41,6 +43,7 @@ build-amd64:
 	@mkdir -p dist
 	docker buildx build \
 		--platform linux/amd64 \
+		--build-arg "BASE=${BASE_IMAGE_AMD64}" \
 		--tag $(IMAGE_NAME)-amd64 \
 		--load \
 		.
@@ -74,6 +77,7 @@ build-arm64:
 	@mkdir -p dist
 	docker buildx build \
 		--platform linux/arm64 \
+		--build-arg "BASE=${BASE_IMAGE_ARM64}" \
 		--tag $(IMAGE_NAME)-arm64 \
 		--load \
 		.
