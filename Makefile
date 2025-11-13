@@ -41,11 +41,10 @@ build-all: build-amd64 build-arm64
 build-amd64:
 	@echo "🔨 Building for AMD64..."
 	@mkdir -p dist
-	docker buildx build \
+	docker build \
 		--platform linux/amd64 \
 		--build-arg "BASE=$(BASE_IMAGE_AMD64)" \
 		--tag $(IMAGE_NAME)-amd64 \
-		--load \
 		.
 	@docker run -d --name $(IMAGE_NAME)-temp-amd64 $(IMAGE_NAME)-amd64 sleep 300
 	@docker exec $(IMAGE_NAME)-temp-amd64 /bin/bash -c '\
@@ -77,13 +76,12 @@ build-amd64:
 build-arm64:
 	@echo "🔨 Building for ARM64..."
 	@mkdir -p dist
-	docker buildx build \
+	docker build \
 		--platform linux/arm64 \
 		--build-arg "BASE=$(BASE_IMAGE_ARM64)" \
 		--tag $(IMAGE_NAME)-arm64 \
-		--load \
 		.
-	@docker run -d --platform linux/arm64 --name $(IMAGE_NAME)-temp-arm64 $(IMAGE_NAME)-arm64 sleep 300
+	@docker run -d --platform linux/arm64 --name $(IMAGE_NAME)-temp-arm64 $(IMAGE_NAME)-arm64 sleep 1800
 	@docker exec $(IMAGE_NAME)-temp-arm64 /bin/bash -c '\
 		echo "🏗️ Building .deb packages inside container..."; \
 		VERSION=$$(grep "^version:" pubspec.yaml | sed "s/version: //" | sed "s/+.*//"); \
